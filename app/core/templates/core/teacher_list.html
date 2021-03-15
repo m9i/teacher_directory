@@ -1,0 +1,51 @@
+
+{% extends 'core/base.html' %}
+
+{% block title %}Teachers{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'teacher-create' %}"><i
+    class="fas fa-plus"></i> New teacher</a>
+<a class="btn btn-primary" href="{% url 'teacher-upload' %}"><i
+    class="fas fa-upload"></i> Upload teachers</a>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="teachertable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email Address</th>
+          <th>Phone Number</th>
+          <th>Room Number</th>
+          <th>Subjects taught</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for teacher in teachers %}
+          <tr class='clickable-row' data-href="{% url 'teacher-detail' teacher.id %}">
+            <td>{{ forloop.counter}}</td>
+            <td>{{ teacher.first_name}} {{student.last_name }} </td>
+            <td>{{ teacher.email}}</td>
+            <td>{{ teacher.phone}}</td>
+            <td>{{ teacher.room}}</td>
+            <td>{{ teacher.subjects}}</td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+
+{% block morejs %}
+<script>
+  $('#teachertable').DataTable({
+  });
+</script>
+
+{% endblock morejs %}
