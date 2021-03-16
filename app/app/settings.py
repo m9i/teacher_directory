@@ -20,7 +20,7 @@ env = environ.Env(
     SECRET_KEY=(str,'SECRET_KEY'),
     DEBUG=(bool, False),
     ALLOWED_HOSTS=(list, []),
-    DATABASE_URL=str,
+    # DATABASE_URL=str,
 )
 environ.Env.read_env(env_file=os.path.join(Path(__file__).resolve().parent.parent.parent, '.env'))
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
@@ -29,15 +29,15 @@ SECRET_KEY=env('SECRET_KEY')
 DEBUG=env('DEBUG')
 ALLOWED_HOSTS=env('ALLOWED_HOSTS')
 # Parse database connection url strings like psql://user:pass@127.0.0.1:8458/db
-DATABASE_URL=env('DATABASE_URL')
-DATABASES = {
+# DATABASE_URL=env('DATABASE_URL')
+# DATABASES = {
     # read os.environ['DATABASE_URL'] and raises ImproperlyConfigured exception if not found
-    'default': env.db(),
+    # 'default': env.db(),
     # 'TEST' : {'NAME': 'test_ppmg',}
     # read os.environ['SQLITE_URL']
     # 'extra': env.db('SQLITE_URL', default='sqlite:////tmp/my-tmp-sqlite.db')
 
-}
+# }
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 5000
 
@@ -95,12 +95,12 @@ WSGI_APPLICATION = 'app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 # 
-# DATABASES = {
-    # 'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 # Password validation
