@@ -33,8 +33,8 @@ jobs:
         pip install -r requirements.txt
         pip install pytest-django
     - name: Run migrations
-      run: python manage.py migrate
+      run: python app/manage.py migrate
     - name: Run tests
-      run: python manage.py test 
+      run: python app/manage.py test 
     - name: Run Flake8
-      run: python manage.py flake8 
+      run: python app/manage.py flake8 
