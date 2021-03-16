@@ -33,7 +33,7 @@ class TeacherDetailView(LoginRequiredMixin, DetailView):
 
 class TeacherCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Teacher
-    fields = '__all__'
+    fields = ['first_name','last_name','email','phone','room','subjects','profile_pic']
     success_message = "New teacher successfully added."
 
     def get_form(self):
@@ -41,12 +41,13 @@ class TeacherCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         form = super(TeacherCreateView, self).get_form()
         form.fields['email'].widget = widgets.Textarea(attrs={'rows': 2})
         form.fields['phone'].widget = widgets.Textarea(attrs={'rows': 2})
+        form.fields['profile_pic'].required = False
         return form
 
 
 class TeacherUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Teacher
-    fields = '__all__'
+    fields = ['first_name','last_name','email','phone','room','subjects','profile_pic']
     success_message = "Record successfully updated."
 
     def get_form(self):
@@ -54,6 +55,7 @@ class TeacherUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         form = super(TeacherUpdateView, self).get_form()
         form.fields['email'].widget = widgets.Textarea(attrs={'rows': 2})
         form.fields['room'].widget = widgets.Textarea(attrs={'rows': 2})
+        form.fields['profile_pic'].required = False
         form.fields['profile_pic'].widget = widgets.FileInput()
         return form
 
@@ -67,7 +69,7 @@ class TeacherBulkUploadView(LoginRequiredMixin, SuccessMessageMixin, CreateView)
     model = TeacherBulkUpload
     template_name = 'core/teacher_upload.html'
     fields = ['csv_file']
-    success_url = '/list'
+    success_url = reverse_lazy('teacher-list')
     success_message = 'Successfully uploaded teachers'
 
 @login_required

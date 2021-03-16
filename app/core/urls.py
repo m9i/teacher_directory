@@ -10,7 +10,6 @@ urlpatterns = [
   path('create/', TeacherCreateView.as_view(), name='teacher-create'),
   path('<int:pk>/update/', TeacherUpdateView.as_view(), name='teacher-update'),
   path('delete/<int:pk>/', TeacherDeleteView.as_view(), name='teacher-delete'),
-
   path('upload/', TeacherBulkUploadView.as_view(), name='teacher-upload'),
   path('downloadcsv/', downloadcsv, name='download-csv'),
 
