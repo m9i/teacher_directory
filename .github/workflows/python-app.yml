@@ -40,4 +40,4 @@ jobs:
     - name: Run tests
       run: python app/manage.py test 
     - name: Run Flake8
-      run: python app/manage.py flake8 
+      run: python app/manage.py test && flake8 
