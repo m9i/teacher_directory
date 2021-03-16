@@ -67,7 +67,7 @@ class Teacher(Logged):
         _('Profile picture'),
         upload_to="",
         validators=[FileExtensionValidator(allowed_extensions=['JPG','jpg','png'])],
-        default='avatar.png' , blank=True)
+        default='default-placeholder-image.png' , blank=True)
     validation_error=models.CharField(
         _('Validation Error'), max_length=255, blank=True)
     
