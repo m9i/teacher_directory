@@ -3,4 +3,4 @@ flake8==3.8.4
 django-environ==0.4.5
 psycopg2==2.8.6
 Pillow==8.1.2
-jango-crispy-forms==1.11.1
+django-crispy-forms==1.11.1
