@@ -9,11 +9,12 @@ jobs:
 
     services:
       postgres:
-        image: postgres:10.8
+        image: postgres:12
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: github_actions
+          DATABASE_URL: "postgres://postgres@localhost:5432/github_actions"
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
@@ -24,7 +25,7 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
+        python-version: 3.8
     - name: psycopg2 prerequisites
       run: sudo apt-get install python3-dev libpq-dev
     - name: Install dependencies
