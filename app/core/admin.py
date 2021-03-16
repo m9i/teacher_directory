@@ -21,10 +21,8 @@ class TeacherAdmin(admin.ModelAdmin):
     form = TeacherAdminForm
     list_per_page = 15
     readonly_fields =['_validation_error',]
-    search_fields = ['email', 
-                     'first_name',
+    search_fields = [
                      'last_name',
-                     'phone',
                      'subjects',
                      ]
     list_display = ['email', 

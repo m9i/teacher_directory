@@ -4,7 +4,6 @@
 {% block content-header %}
 <div class="card-header">
   <div class="card-tools">
-    <a href="#" class="btn btn-tool">Print</a>
     <a href="{% url 'teacher-update' object.id %}" class="btn btn-tool">
       <i class="fas fa-edit"></i>
     </a>
@@ -26,7 +25,7 @@
               class="float-left rounded-circle mr-3 profile-pic" style="width: 120px; height: 120px;">
           {% else %}
             <img
-              src="{{MEDIA_URL}}avatar.png"
+              src="{{MEDIA_URL}}default-placeholder-image.png"
               class="float-left rounded-circle mr-3 profile-pic" style="width: 120px; height: 120px;">
           {% endif %}
 
@@ -72,9 +71,6 @@
               {{ object.phone }}
             </div>
           </div>
-
-
-
 
         </div>
 

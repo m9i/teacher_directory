@@ -1,6 +1,6 @@
 
 {% extends 'core/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block title %}Teachers{% endblock title %}
 
 {% block breadcrumb %}
@@ -10,7 +10,18 @@
     class="fas fa-upload"></i> Upload teachers</a>
 {% endblock breadcrumb %}
 
+
 {% block content %}
+  <form method="get">
+    {{ filter.form.as_p }}
+    <ul>
+    <button class="btn btn-primary" type="submit">Search</button>
+    </ul>
+  </form>
+
+<!-- Filter Results -->
+
+
   <div class="table-responsive">
     <table id="teachertable" class="table table-bordered table-hover" data-page-length='100'>
       <thead class="thead-light">
@@ -25,10 +36,11 @@
       </thead>
       <tbody>
 
-        {% for teacher in teachers %}
+        {% for teacher in filter.qs %}
           <tr class='clickable-row' data-href="{% url 'teacher-detail' teacher.id %}">
-            <td>{{ forloop.counter}}</td>
-            <td>{{ teacher.first_name}} {{student.last_name }} </td>
+<!--<td>{{ forloop.counter}}</td>-->
+            <td>{{ teacher.first_name}}</td>
+            <td> {{teacher.last_name }} </td>
             <td>{{ teacher.email}}</td>
             <td>{{ teacher.phone}}</td>
             <td>{{ teacher.room}}</td>
@@ -39,6 +51,7 @@
       </tbody>
     </table>
   </div>
+
 {% endblock content %}
 
 
@@ -47,5 +60,11 @@
   $('#teachertable').DataTable({
   });
 </script>
+
+    <script>
+        $(document).ready(function(){
+            $('#resultDataTable').dataTable();
+        });
+    </script>
 
 {% endblock morejs %}

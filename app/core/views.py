@@ -1,25 +1,64 @@
 import csv
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, ListView, TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.forms import widgets
 from django.urls import reverse_lazy
 
 from .models import Teacher, TeacherBulkUpload
+from .filters import TeacherFilter
+from .permission_handlers import user_is_verified
+
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = 'index.html'
 
 
-@login_required
-def teacher_list(request):
-  teachers = Teacher.objects.all()
-  return render(request, 'core/teacher_list.html', {"teachers":teachers})
+def search(request):
+    teacher = Teacher.objects.all()
+    teacher_filter = TeacherFilter(request.GET, queryset=teacher)
+    return render(request, 'core/teacher_list.html', {'filter': teacher_filter})
+
+class TeacherListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Teacher
+    template_name = 'core/teacher_list.html'
+    
+    def post(self, request, *args, **kwargs):
+        teacher = Teacher.objects.all()
+        teacher_filter = TeacherFilter(request.GET, queryset=teacher)
+        return render(request, 'core/teacher_list.html', {'filter': teacher_filter})
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
+    def get_queryset(self):
+        queryset = Teacher.objects.all()
+        return queryset
+    
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        ctx = super().get_context_data(*args, object_list=object_list, **kwargs)
+        teachers = Teacher.objects.all()
+        f = TeacherFilter(self.request.GET, queryset=teachers)
+        ctx['filter'] = f
+        return ctx
+
+
+@user_passes_test(user_is_verified)
+def result_view(request):
+    if not request.GET:
+        qs =  Teacher.objects.none()
+    else:
+        qs =  Teacher.objects.all()
+    f = TeacherFilter(request.GET, queryset=qs)
+    ctx = {'filter': f, }
+    return render(request, 'result/teacher_list.html', ctx)
 
 
 class TeacherDetailView(LoginRequiredMixin, DetailView):
@@ -63,6 +102,7 @@ class TeacherUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 class TeacherDeleteView(LoginRequiredMixin, DeleteView):
     model = Teacher
     success_url = reverse_lazy('teacher-list')
+    
 
 
 class TeacherBulkUploadView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
