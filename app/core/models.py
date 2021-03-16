@@ -1,14 +1,17 @@
+import os
+
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.urls import reverse
 from django.conf import settings
-import os
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
-
+from django.utils.deconstruct import deconstructible
+from django.template.defaultfilters import filesizeformat
+from django.core.validators import FileExtensionValidator
 
 
 
@@ -38,57 +41,6 @@ class Logged(models.Model):
     class Meta:
         abstract = True
     
-    @classmethod
-    def bulk_update_or_create(cls, common_keys, unique_key_name, unique_key_to_defaults):
-        """
-        common_keys: {field_name: field_value}
-        unique_key_name: field_name
-        unique_key_to_defaults: {field_value: {field_name: field_value}}
-        
-        ex. Event.bulk_update_or_create(
-            {"organization": organization}, "external_id", {1234, {"started": True}}
-        )
-        """
-        with transaction.atomic():
-            filter_kwargs = dict(common_keys)
-            filter_kwargs[f"{unique_key_name}__in"] = unique_key_to_defaults.keys()
-            existing_objs = {
-                getattr(obj, unique_key_name): obj
-                for obj in cls.objects.filter(**filter_kwargs).select_for_update()
-            }
-            
-            create_data = {
-                k: v for k, v in unique_key_to_defaults.items() if k not in existing_objs
-            }
-            for unique_key_value, obj in create_data.items():
-                obj[unique_key_name] = unique_key_value
-                obj.update(common_keys)
-            creates = [cls(**obj_data) for obj_data in create_data.values()]
-            if creates:
-                cls.objects.bulk_create(creates)
-            
-            update_fields = {"updated_on"}
-            updates = []
-            for key, obj in existing_objs.items():
-                obj.update(unique_key_to_defaults[key], save=False)
-                update_fields.update(unique_key_to_defaults[key].keys())
-                updates.append(obj)
-            if existing_objs:
-                cls.objects.bulk_update(updates, update_fields)
-        return len(creates), len(updates)
-
-    
-    def update(self, update_dict=None, save=True, **kwargs):
-        """ Helper method to update objects """
-        if not update_dict:
-            update_dict = kwargs
-        # This set should contain the name of the `auto_now` field of the model
-        update_fields = {"updated_on"}
-        for k, v in update_dict.items():
-            setattr(self, k, v)
-            update_fields.add(k)
-        if save:
-            self.save(update_fields=update_fields)
 
 
 class Teacher(Logged):
@@ -113,8 +65,11 @@ class Teacher(Logged):
         _('Subjects taught'), max_length=255, blank=True)
     profile_pic = models.ImageField(
         _('Profile picture'),
-        upload_to="teacher_dir/teacher_profile_pic",
+        upload_to="",
+        validators=[FileExtensionValidator(allowed_extensions=['JPG','jpg','png'])],
         default='avatar.png' , blank=True)
+    validation_error=models.CharField(
+        _('Validation Error'), max_length=255, blank=True)
     
     class Meta:
         ordering = ['first_name', 'last_name', 'email']
@@ -130,29 +85,33 @@ class Teacher(Logged):
             if self.profile_pic.seek:
                 return self.profile_pic.url
         except FileNotFoundError:
-            return f'{settings.STATIC_URL}dist/img/avatar.png'      
+            return f'{settings.MEDIA_ROOT}avatar.png'      
+
+
 
 
 @receiver(pre_save, sender=Teacher)
 def check_subjects_limit(sender, instance, **kwargs):
     if instance.subjects.split(',').__len__() > 5: 
-         raise ValidationError(
+         return ValidationError(
              _("Can't add more than 5 subjects to a Teacher"))
      
 @receiver(pre_save, sender=Teacher)
 def check_has_email(sender, instance, **kwargs):
     if not instance.email:
-        raise ValidationError(_('The given email must be set'))
+        return ValidationError(_('The given email must be set'))
 
 
 class TeacherBulkUpload(models.Model):
     date_uploaded = models.DateTimeField(
         _('Date Uploaded'), auto_now=True)
     csv_file = models.FileField(
-        _('File Upload'), 
-        upload_to='teachers/bulkupload/')
+        _('File Upload'),
+        validators=[FileExtensionValidator(allowed_extensions=['csv'])],
+        upload_to='teachers/bulkupload')
     image_zip_file = models.FileField(
-        _('zip File Image Upload'), 
+        _('zip File Image Upload'),
+        validators=[FileExtensionValidator(allowed_extensions=['zip'])],
         upload_to='teachers/bulkupload/images', blank=True)
     
     
@@ -162,12 +121,6 @@ class TeacherBulkUpload(models.Model):
     def __str__(self):
         return self.csv_file.name.split('/')[-1]
 
-@receiver(pre_save, sender=TeacherBulkUpload)
-def validate_file_extension(sender, instance, **kwargs):
-    ext = os.path.splitext(instance.csv_file.name)[1]  
-    valid_extensions = ['.csv']
-    if not ext.lower() in valid_extensions:
-        raise ValidationError(
-            _("Uploaded file isn't in a right format!, it should be a .csv file."))
+
         
     

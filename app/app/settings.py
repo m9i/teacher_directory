@@ -135,14 +135,18 @@ USE_L10N = True
 
 USE_TZ = True
 
+# https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-FILE_UPLOAD_MAX_MEMORY_SIZE
+# Assigns read+write to user, and read only to group
+FILE_UPLOAD_PERMISSIONS = 0o644
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+DATA_UPLOAD_MAX_MEMORY_SIZE = 100000000
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-# DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 # 
-STATIC_URL = '/static/'
 
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
@@ -150,8 +154,6 @@ STATICFILES_DIRS = (
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-MEDIA_URL = '/media/'
 
 LOGIN_REDIRECT_URL = '/'
 

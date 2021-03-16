@@ -133,3 +133,5 @@ dmypy.json
 .env
 **/staticfiles/**
 **/static/**
+**/media/**
+**/.DS_Store

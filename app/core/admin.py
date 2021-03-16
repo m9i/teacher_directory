@@ -1,11 +1,26 @@
 from django.contrib import admin
-from imagekit.admin import AdminThumbnail
+from django import forms
 
 from .models import Teacher, TeacherBulkUpload
 
 
+
+
+class TeacherAdminForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        exclude = [id, ]
+
+    def clean(self):
+        subjects = self.cleaned_data.get('subjects')
+        if subjects.split(',').__len__() > 5: 
+            raise forms.ValidationError("Can't add more than 5 subjects to a Teacher")
+        return self.cleaned_data
+
 class TeacherAdmin(admin.ModelAdmin):
-    # readonly_fields = ['get_photo_url',]
+    form = TeacherAdminForm
+    list_per_page = 15
+    readonly_fields =['_validation_error',]
     search_fields = ['email', 
                      'first_name',
                      'last_name',
@@ -17,18 +32,29 @@ class TeacherAdmin(admin.ModelAdmin):
                      'last_name',
                      'phone',
                      'subjects',
+                     '_validation_error',
                      ]
-    # fields = ['email', 
-            #   'first_name',
-            #   'last_name',
-            #   'phone',
-            #   'subjects',
-            #   'get_photo_url',]
-    
+    fields = [( 
+              'first_name',
+              'last_name',
+              'phone',
+              'email',
+              'subjects',
+              'profile_pic',
+              '_validation_error',)
+                ]
+    def _validation_error(self,instance):
+        error = {'validation_error':"Can't add more than 5 subjects to a Teacher"}
+        if instance.subjects.split(',').__len__() > 5: 
+            instance.validation_error = error['validation_error']
+            return instance.validation_error
     
 class TeacherBulkUploadAdmin(admin.ModelAdmin):
-    pass
-
+    fields = [( 
+              'csv_file',
+              'image_zip_file',)
+                ]
+    
 
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(TeacherBulkUpload, TeacherBulkUploadAdmin)

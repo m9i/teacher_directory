@@ -1,29 +1,27 @@
 import os
 import csv
+import zipfile
 from io import StringIO
+
 from django.conf import settings
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
-import zipfile
-
+from django.utils.translation import gettext_lazy as _
 
 from .models import Teacher, TeacherBulkUpload
 
 @receiver(post_save, sender=TeacherBulkUpload)
-def create_bulk_student(sender, created, instance, *args, **kwargs):
+def create_bulk_teacher(sender, created, instance, *args, **kwargs):
   if created:
     opened = StringIO(instance.csv_file.read().decode())
     if instance.image_zip_file:
-      imgopened = zipfile.ZipFile(instance.image_zip_file,'r')
-      if imgopened:
-        with imgopened as f:
-          
-          f.extractall()
-        # f.extractall(os.path.join(settings.MEDIA_URL, 'images'))
+      with zipfile.ZipFile(instance.image_zip_file,'r') as zf:  
+        zf.extractall(settings.MEDIA_ROOT)
     reading = csv.DictReader(opened, delimiter=',')
     to_create = []
     to_update = []
+    
     for row in reading:
       if 'Email Address' in row and row['Email Address']:
         email = row['Email Address'].strip() 
@@ -33,6 +31,7 @@ def create_bulk_student(sender, created, instance, *args, **kwargs):
         phone = row['Phone Number'].strip()  if 'Phone Number' in row and row['Phone Number'] else ''
         profile_pic = row['Profile picture'].strip() if 'Profile picture' in row and row['Profile picture'] else ''
         subjects = row['Subjects taught'].strip()  if 'Subjects taught' in row and row['Subjects taught'] else ''
+        
         check = Teacher.objects.filter(email=email).exists()
         if not check:
           to_create.append(
@@ -55,13 +54,9 @@ def create_bulk_student(sender, created, instance, *args, **kwargs):
     Teacher.objects.bulk_update(to_update, 
                                 fields=fields, 
                                 batch_size=5000)
+
     instance.csv_file.close()
     instance.delete()
-    
-
-
-
-
 
 
 def _delete_file(path):
