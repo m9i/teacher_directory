@@ -34,9 +34,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Wait for db
+      run: python app/manage.py wait_for_db
     - name: Run migrations
       run: python app/manage.py migrate
     - name: Run tests
       run: python app/manage.py test 
-    # - name: Run Flake8
+    # - name: Link Flake8
       # run: python app/manage.py test && flake8 
