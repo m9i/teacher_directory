@@ -4,6 +4,9 @@ from core.models import Teacher
 
 
 class TeacherFilter(django_filters.FilterSet):
+    last_name = django_filters.CharFilter(lookup_expr='startswith')
+    subjects = django_filters.CharFilter(lookup_expr='startswith')
+    
     class Meta:
         model = Teacher
         fields = [

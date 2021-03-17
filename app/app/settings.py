@@ -19,8 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(
     SECRET_KEY=(str,'SECRET_KEY'),
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, []),
-    # DATABASE_URL=str,
+    ALLOWED_HOSTS=(list, ['*',]),
+    DATABASE_URL=(str,'postgres://postgres:postgres@postgres:5432/github_actions'),
 )
 environ.Env.read_env(env_file=os.path.join(Path(__file__).resolve().parent.parent.parent, '.env'))
 # Raises django's ImproperlyConfigured exception if SECRET_KEY not in os.environ
@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'core',
     'django_filters',
-    'crispy_forms',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +71,20 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
 
 ROOT_URLCONF = 'app.urls'
 

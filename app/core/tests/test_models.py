@@ -13,9 +13,10 @@ class TeacherDirectoryTests(TestCase):
             'phone': "+971-505-555-353",
             'subjects':'geography, Computer science, Biology, Chemistry',}  
         Teacher.objects.create(**teacher_fields)        
-
+    
+    
     def tearDown(self):
-        pass
+        super().tearDown()
      
     def test_teacher_default_photo_url(self):
         teacher=Teacher.objects.get(id=1)

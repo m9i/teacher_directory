@@ -9,11 +9,29 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.forms import widgets
 from django.urls import reverse_lazy
+from django.template import RequestContext
+
 
 from .models import Teacher, TeacherBulkUpload
 from .filters import TeacherFilter
 from .permission_handlers import user_is_verified
 
+
+
+
+
+def handler404(request, *args, **argv):
+    error = 'Request Not Found, back to previous page!'
+    response = render(request, 'core/error_page.html', {})
+    response.status_code = 404
+    return response
+
+
+def handler500(request, *args, **argv):
+    error = 'Server Is Busy, try later!'
+    response = render(request, 'core/error_page.html', {})
+    response.status_code = 500
+    return response
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
