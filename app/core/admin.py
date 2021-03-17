@@ -20,7 +20,7 @@ class TeacherAdminForm(forms.ModelForm):
 class TeacherAdmin(admin.ModelAdmin):
     form = TeacherAdminForm
     list_per_page = 15
-    readonly_fields =['_validation_error',]
+    readonly_fields =['get_validation_error',]
     search_fields = [
                      'last_name',
                      'subjects',
@@ -30,7 +30,7 @@ class TeacherAdmin(admin.ModelAdmin):
                      'last_name',
                      'phone',
                      'subjects',
-                     '_validation_error',
+                     'get_validation_error',
                      ]
     fields = [( 
               'first_name',
@@ -39,13 +39,9 @@ class TeacherAdmin(admin.ModelAdmin):
               'email',
               'subjects',
               'profile_pic',
-              '_validation_error',)
+              'get_validation_error',)
                 ]
-    def _validation_error(self,instance):
-        error = {'validation_error':"Can't add more than 5 subjects to a Teacher"}
-        if instance.subjects.split(',').__len__() > 5: 
-            instance.validation_error = error['validation_error']
-            return instance.validation_error
+
     
 class TeacherBulkUploadAdmin(admin.ModelAdmin):
     fields = [( 

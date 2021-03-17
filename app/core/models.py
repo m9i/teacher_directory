@@ -62,7 +62,7 @@ class Teacher(Logged):
     room = models.CharField(
         _('Room Number'), max_length=255, blank=True)
     subjects = models.CharField(
-        _('Subjects taught'), max_length=255, blank=True)
+        _('Subjects taught'), max_length=500, blank=True)
     profile_pic = models.ImageField(
         _('Profile picture'),
         upload_to="",
@@ -85,8 +85,13 @@ class Teacher(Logged):
             if self.profile_pic.seek:
                 return self.profile_pic.url
         except FileNotFoundError:
-            return f'{settings.MEDIA_ROOT}avatar.png'      
-
+            return f'{settings.MEDIA_ROOT}default-placeholder-image.png'      
+    
+    def get_validation_error(self):
+        error = {'validation_error':"Can't add more than 5 subjects to a Teacher"}
+        if self.subjects.split(',').__len__() > 5: 
+            self.validation_error = error['validation_error']
+            return self.validation_error+' and now is '+str(self.subjects.split(',').__len__()) 
 
 
 
