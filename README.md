@@ -1,5 +1,5 @@
 # Teacher Directory
-## > A client has requested we create a Directory app containing all the Teachers in a given school.
+> ## A client has requested we create a Directory app containing all the Teachers in a given school.
  
 ## Features
 - Teachers can have the same first name and last name but their email address should be unique
