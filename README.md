@@ -92,7 +92,7 @@ use .env file in the BASE_DIR
 > For more please see **ALL** the urls.py in the project
 
 > ## Development
-
+This Project is developed with all desired features in both B2B and B2C side. (AdminSite and View+Templates). Moreover, it has API endpoint for more UI development in near future. 
 
 
 ```sh
