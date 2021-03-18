@@ -104,5 +104,5 @@ python3.8 manage.py runserver 127.0.0.1:8000
  -  ```MIT```
 
 Api Basic Authentication
-
-❮img src="/app/test_images/basic_auth_api.png" width="100" ❯
+<img width="100" alt="api" src="https://user-images.githubusercontent.com/11647170/111675449-6047e980-8832-11eb-9964-cd7146494414.png">
+❮img src="https://github.com/m9i/teacher_directory/tree/main/app/test_images" width="100" ❯
