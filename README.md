@@ -103,3 +103,6 @@ python3.8 manage.py runserver 127.0.0.1:8000
 
  -  ```MIT```
 
+Api Basic Authentication
+
+❮img src="/app/test_images/basic_auth_api.png" width="100" ❯
