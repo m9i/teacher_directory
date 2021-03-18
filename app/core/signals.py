@@ -76,9 +76,9 @@ def delete_profiel_pic_on_delete(sender, instance, *args, **kwargs):
     _delete_file(instance.profile_pic.path)
     
     
-@receiver(post_save, sender=Teacher)
-def check_subjects_limit(sender, instance, **kwargs):
-    if instance.subjects.split(',').__len__() > 5: 
-         raise ValidationError(
-             _("Can't add more than 5 subjects to a Teacher"))
+# @receiver(post_save, sender=Teacher)
+# def check_subjects_limit(sender, instance, **kwargs):
+    # if set(instance.subjects.split(',')).__len__() > 5: 
+        #  raise ValidationError(
+            #  _("Can't add more than 5 subjects to a Teacher"))
      

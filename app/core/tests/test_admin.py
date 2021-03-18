@@ -42,11 +42,11 @@ class ModelAdminTests(TestCase):
         self.assertEqual(list(ma.get_fields(request)),
                         ['date_removed', 'is_active', 'email',
                           'first_name', 'last_name', 'phone', 'room',
-                           'subjects', 'profile_pic', 'validation_error'])
+                           'subjects', 'profile_pic','validation_error','is_valid'])
         self.assertEqual(list(ma.get_fields(request, self.teacher)),
                         ['date_removed', 'is_active', 'email',
                           'first_name', 'last_name', 'phone', 'room',
-                           'subjects', 'profile_pic', 'validation_error'])
+                           'subjects', 'profile_pic', 'validation_error','is_valid'])
         self.assertIsNone(ma.get_exclude(request, self.teacher))
     
     

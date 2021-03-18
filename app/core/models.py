@@ -70,6 +70,8 @@ class Teacher(Logged):
         default='default-placeholder-image.png' , blank=True)
     validation_error=models.CharField(
         _('Validation Error'), max_length=255, blank=True)
+    is_valid = models.BooleanField(
+        _('Valid'), default=True)
     
     class Meta:
         ordering = ['first_name', 'last_name', 'email']
@@ -89,12 +91,21 @@ class Teacher(Logged):
     
     def get_validation_error(self):
         error = {'validation_error':"Can't add more than 5 subjects to a Teacher"}
-        if self.subjects.split(',').__len__() > 5: 
+        if set(self.subjects.split(',')).__len__() > 5: 
             self.validation_error = error['validation_error']
+            self.is_valid= False
             return self.validation_error+' and now is '+str(self.subjects.split(',').__len__()) 
         else:
-            return 'Valid'
+            unique_keys = [key.strip() for key in list(dict.fromkeys(self.subjects.split(',')))]
+            self.subjects = ', '.join([str(elem) for elem in unique_keys]) 
+            self.save()
+            return ''
 
+def listToString(s):  
+    str1 = ""  
+    for ele in s:  
+        str1 += ele   
+    return str1 
 
 @receiver(pre_save, sender=Teacher)
 def check_subjects_limit(sender, instance, **kwargs):

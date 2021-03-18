@@ -40,7 +40,7 @@ class TeacherDirectoryTests(TestCase):
     
     def test_get_validation_error_none(self):
         teacher=Teacher.objects.get(id=1)
-        self.assertEqual(teacher.get_validation_error(), None)
+        self.assertEqual(teacher.get_validation_error(), '')
     
     def test_get_validation_error(self):
         subjects='geography, Computer science, Biology, Chemistry, English, Mathematics'
