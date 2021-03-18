@@ -2,16 +2,18 @@
 ## _ A client has requested we create a Directory app containing all the Teachers in a given school.
  
 ## Features
+- Teachers can have the same first name and last name but their email address should be unique
+- A teacher can teach no more than 5 subjects
+- The directory should allow Teachers to filtered by first letter of last name or by subject.
+- You should be able to click on a teach in the directory and open up the profile page. From there you
+can see all details for the teacher.
+- An Importer will be needed to allow Teachers details to be added to the system in bulk. This should
+be secure so only logged in users can run the importer.
+- The CSV attached contains a list of teacher who need to be uploaded as well as the filename for the
+profile image. Profile images are in the attached Zip file.
+- If an image is not present for the profile then you should use a default placeholder image.
 
-- Import a HTML file and watch it magically convert to Markdown
-- Drag and drop images (requires your Dropbox account be linked)
-- Import and save files from GitHub, Dropbox, Google Drive and One Drive
-- Drag and drop markdown and HTML files into Dillinger
-- Export documents as Markdown, HTML and PDF
 
-Markdown is a lightweight markup language based on the formatting conventions
-that people naturally use in email.
-As [John Gruber] writes on the [Markdown site][df1]
 
 > The overriding design goal for Markdown's
 > formatting syntax is to make it as readable
@@ -49,7 +51,8 @@ see the install guid on .github/workflow
 
 Install the dependencies and devDependencies and start the server.
 
-``` python-version: 3.8
+```sh
+ python-version: 3.8
     - name: psycopg2 prerequisites
       run: sudo apt-get install python3-dev libpq-dev
     - name: Install dependencies
@@ -62,11 +65,17 @@ Install the dependencies and devDependencies and start the server.
       run: python app/manage.py test 
 ```
 
+
+```sh
+If Docker installed:
+docker-compose up
+```
+
 For production environments...
 
 ```sh
-npm install --production
-NODE_ENV=production node app
+use .env file in the BASE_DIR
+
 ```
 
 ## Plugins
