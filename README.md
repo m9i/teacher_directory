@@ -1,7 +1,7 @@
 ## Teacher Directory
 > #### A client has requested we create a Directory app containing all the Teachers in a given school.
  
-## Features
+> ## Features
 - Teachers can have the same first name and last name but their email address should be unique
 - A teacher can teach no more than 5 subjects
 - The directory should allow Teachers to filtered by first letter of last name or by subject.
@@ -16,42 +16,55 @@ profile image. Profile images are in the attached Zip file.
 
 
 > How To Run ?
-> To run this project you need to follow the instruction in python-app.yml in .github/workflow 
+> - To run this project you need to follow the instruction in python-app.yml in .github/workflow 
 
 
 
-## Tech
+> ## Tech
 
-- [Django] - 
-- [VSCode] - 
-- [Python] - 
-- [Github-action] - 
-- [Docker] -
-- [Travis-ci] -
-- [TDD] -
-- [markdown-it] -
+- [Django] - ```app```
+- [Python] - ```app```
+- [Restframework] - ```app/core/api/**```
+- [Jinja2] - ```app/core/templates```
+- [Html] - ```app/core/templates/**```
+- [Javascript] - ```app/core/static/**```
+- [Css] - ```app/core/static/**```
+- [VSCode] - ```IDE```
+- [Github-action] - ```.github/workflows/python-app.yml ```
+- [Docker] - ```docker-compose.yml```
+- [Travis-ci] - ```travis.yml```
+- [TDD] - ``` core/test/** ```
+- [markdown-it] - ```Readme.md```
 
 
 
-## Installation
+> ## Installation
 
 see the install guid on .github/workflow
-> I uploaded all the staticfiles needed for this project in the app/core/static which have made the project Javascript libs more than Python. 
+> - I uploaded all the staticfiles needed for this project in the app/core/static which have made the project Javascript libs more than Python libs. 
 
 Install the dependencies and devDependencies and start the server.
 
 ```sh
- python-version: 3.8
+    - runs on ubuntu or mac os
+      with:
+        python-version: 3.8
     - name: psycopg2 prerequisites
       run: sudo apt-get install python3-dev libpq-dev
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Wait for db
+      run: python app/manage.py wait_for_db
     - name: Run migrations
       run: python app/manage.py migrate
+    - name: collect staticfiles
+      run: python app/manage.py collectstatic
+    - name: create superuser
+      run: python app/manage.py createsuperuser
     - name: Run tests
-      run: python app/manage.py test 
+      run: python app/manage.py test  
 ```
 
 If Docker installed:
@@ -67,7 +80,7 @@ use .env file in the BASE_DIR
 
 ```
 
-## Features built
+> ## Features built
 
 | Built Feat | README |
 | ------ | ------ |
@@ -78,15 +91,15 @@ use .env file in the BASE_DIR
 | list | 127.0.0.1:8000/core/list|
 > For more please see **ALL** the urls.py in the project
 
-## Development
+> ## Development
 
 
 
 ```sh
-127.0.0.1:8000
+python3.8 manage.py runserver 127.0.0.1:8000
 ```
 
-## License
+> ## License
 
 MIT
 
