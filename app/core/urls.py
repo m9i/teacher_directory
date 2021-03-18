@@ -6,7 +6,8 @@ from .views import *
 urlpatterns = [
   path('', IndexView.as_view(), name='home'),
 #   path('list', search, name='search'),
-  path('list', TeacherListView.as_view(),name='teacher-list'),
+  path('list', TeacherListView.as_view(), 
+       name='teacher-list'),
 #   path('list', result_view,
       #   name='result_detail_view'
 #     ),

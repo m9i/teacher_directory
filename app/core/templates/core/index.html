@@ -1,7 +1,7 @@
-{% extends 'core/base.html' %}
-
+{% extends "admin/base.html" %}
 
 {% block content %}
   <p>Dashboard contents and design coming soon.</p>
   <p> Use the sidebar menu for now!</p>
+  <a href="{% url 'admin:index' %}">Home</a>
 {% endblock content %}

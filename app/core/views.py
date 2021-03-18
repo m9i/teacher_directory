@@ -35,7 +35,7 @@ def handler500(request, *args, **argv):
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
-    template_name = 'index.html'
+    template_name = 'core/index.html'
 
 
 def search(request):
@@ -46,6 +46,7 @@ def search(request):
 class TeacherListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Teacher
     template_name = 'core/teacher_list.html'
+    paginate_by = 10
     
     def post(self, request, *args, **kwargs):
         teacher = Teacher.objects.all()
