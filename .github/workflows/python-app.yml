@@ -40,6 +40,8 @@ jobs:
       run: python app/manage.py migrate
     - name: collect staticfiles
       run: python app/manage.py collectstatic
+    - name: create superuser
+      run: python app/manage.py createsuperuser
     - name: Run tests
       run: python app/manage.py test 
     # - name: Link Flake8

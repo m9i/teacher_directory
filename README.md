@@ -1,5 +1,5 @@
-# Teacher Directory
-> ## A client has requested we create a Directory app containing all the Teachers in a given school.
+## Teacher Directory
+> #### A client has requested we create a Directory app containing all the Teachers in a given school.
  
 ## Features
 - Teachers can have the same first name and last name but their email address should be unique
@@ -16,6 +16,8 @@ profile image. Profile images are in the attached Zip file.
 
 
 > How To Run ?
+> To run this project you need to follow the instruction in python-app.yml in .github/workflow 
+
 
 
 ## Tech
@@ -34,6 +36,7 @@ profile image. Profile images are in the attached Zip file.
 ## Installation
 
 see the install guid on .github/workflow
+> I uploaded all the staticfiles needed for this project in the app/core/static which makes the project Javascript libs more than Python. 
 
 Install the dependencies and devDependencies and start the server.
 
@@ -64,12 +67,16 @@ use .env file in the BASE_DIR
 
 ```
 
-## Plugins
+## Features built
 
-| Plugin | README |
+| Built Feat | README |
 | ------ | ------ |
-|  | |
-
+| API | 127.0.0.1:8000/api|
+| swagger | 127.0.0.1:8000/swagger|
+| admin | 127.0.0.1:8000/accounts|
+| viewsite | 127.0.0.1:8000/core|
+| list | 127.0.0.1:8000/core/list|
+> For more please see **ALL** the urls.py in the project
 
 ## Development
 
