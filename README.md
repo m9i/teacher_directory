@@ -103,6 +103,22 @@ python3.8 manage.py runserver 127.0.0.1:8000
 
  -  ```MIT```
 
-Api Basic Authentication
+- <img width="200" alt="api" src="https://user-images.githubusercontent.com/11647170/111675449-6047e980-8832-11eb-9964-cd7146494414.png">
+- <img width="200" alt="basic_auth_api" src="https://user-images.githubusercontent.com/11647170/111675594-8e2d2e00-8832-11eb-928b-b00adfe51d90.png">
+- <img width="200" alt="default_image" src="https://user-images.githubusercontent.com/11647170/111675604-8ff6f180-8832-11eb-92ed-104491cc17d0.png">
+- <img width="200" alt="file_upload" src="https://user-images.githubusercontent.com/11647170/111675610-91281e80-8832-11eb-97fe-8b052a415a70.png">
+- <img width="200" alt="redoc" src="https://user-images.githubusercontent.com/11647170/111675620-95543c00-8832-11eb-8899-d6131f4f8d86.png">
+- <img width="200" alt="swagger" src="https://user-images.githubusercontent.com/11647170/111675631-984f2c80-8832-11eb-9e66-50344038609e.png">
+- <img width="200" alt="teacher_admin_list" src="https://user-images.githubusercontent.com/11647170/111675639-99805980-8832-11eb-9447-33bcbd4a8808.png">
+- <img width="200" alt="teacher_detail_and_view_onsite" src="https://user-images.githubusercontent.com/11647170/111675643-9b4a1d00-8832-11eb-9442-401610b5d995.png">
+- <img width="200" alt="teacher_detail" src="https://user-images.githubusercontent.com/11647170/111675653-9c7b4a00-8832-11eb-8c1e-31f514b3a31a.png">
+- <img width="200" alt="teacher_seach_by_last_name" src="https://user-images.githubusercontent.com/11647170/111675656-9dac7700-8832-11eb-87a5-87dfbf0c5de6.png">
 
-❮img src="/app/test_images/basic_auth_api.png" width="100" ❯
+
+
+
+
+
+
+
+
