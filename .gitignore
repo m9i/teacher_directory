@@ -132,6 +132,5 @@ dmypy.json
 .vscode/**
 .env
 **/staticfiles/**
-**/static/**
 **/media/**
 **/.DS_Store
