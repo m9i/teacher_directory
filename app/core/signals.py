@@ -11,6 +11,14 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import Teacher, TeacherBulkUpload
 
+"""
+An Importer will be needed to allow Teachers details to be added to the system in bulk. This should
+be secure so only logged in users can run the importer.
+The CSV attached contains a list of teacher who need to be uploaded as well as the filename for the
+profile image. Profile images are in the attached Zip file.
+
+"""
+
 @receiver(post_save, sender=TeacherBulkUpload)
 def create_bulk_teacher(sender, created, instance, *args, **kwargs):
   if created:
@@ -75,10 +83,5 @@ def delete_profiel_pic_on_delete(sender, instance, *args, **kwargs):
   if instance.profile_pic:
     _delete_file(instance.profile_pic.path)
     
-    
-# @receiver(post_save, sender=Teacher)
-# def check_subjects_limit(sender, instance, **kwargs):
-    # if set(instance.subjects.split(',')).__len__() > 5: 
-        #  raise ValidationError(
-            #  _("Can't add more than 5 subjects to a Teacher"))
+
      

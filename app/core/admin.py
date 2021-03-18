@@ -4,8 +4,11 @@ from django.db.models import Q
 
 from .models import Teacher, TeacherBulkUpload
 
-
+# A teacher can teach no more than 5 subjects
 class TeacherAdminForm(forms.ModelForm):
+    """ 
+    A teacher can teach no more than 5 subjects
+    """
     class Meta:
         model = Teacher
         exclude = [id, ]
@@ -41,12 +44,16 @@ class TeacherAdmin(admin.ModelAdmin):
               'is_valid',
               )
                 ]
-    
+    # The directory should allow Teachers to filtered by first letter of last name or by subject.
     def get_search_results(self, request, queryset, search_term):
-        queryset, use_distinct = super(TeacherAdmin, self).get_search_results(request, queryset, search_term)
+        queryset, use_distinct = super(
+            TeacherAdmin, self).get_search_results(
+                request, queryset, search_term)
         try:
             search_term_as_int = int(search_term)
-            queryset |= self.model.objects.filter(Q(last_name__startwith=search_term_as_int)| Q(subjects__startwith=search_term_as_int))
+            queryset |= self.model.objects.filter(
+                Q(last_name__startwith=search_term_as_int)|
+                 Q(subjects__startwith=search_term_as_int))
         except:
             pass
         return queryset, use_distinct

@@ -44,6 +44,7 @@ class Logged(models.Model):
 
 
 class Teacher(Logged):
+    # email address should be unique
     email = models.EmailField(
         _('Email Address'),
          unique=True,
@@ -63,11 +64,13 @@ class Teacher(Logged):
         _('Room Number'), max_length=255, blank=True)
     subjects = models.CharField(
         _('Subjects taught'), max_length=500, blank=True)
+    
     profile_pic = models.ImageField(
         _('Profile picture'),
         upload_to="",
         validators=[FileExtensionValidator(allowed_extensions=['JPG','jpg','png'])],
-        default='default-placeholder-image.png' , blank=True)
+        default='default-placeholder-image.png' , blank=True) 
+    # if an image is not present for the profile then you should use a default placeholder image
     validation_error=models.CharField(
         _('Validation Error'), max_length=255, blank=True)
     is_valid = models.BooleanField(
@@ -88,8 +91,12 @@ class Teacher(Logged):
                 return self.profile_pic.url
         except FileNotFoundError:
             return f'{settings.MEDIA_ROOT}default-placeholder-image.png'      
-    
+
+    # A teacher can teach no more than 5 subjects
     def get_validation_error(self):
+        """ 
+        A teacher can teach no more than 5 subjects
+        """
         error = {'validation_error':"Can't add more than 5 subjects to a Teacher"}
         if set(self.subjects.split(',')).__len__() > 5: 
             self.validation_error = error['validation_error']
@@ -101,11 +108,6 @@ class Teacher(Logged):
             self.save()
             return ''
 
-def listToString(s):  
-    str1 = ""  
-    for ele in s:  
-        str1 += ele   
-    return str1 
 
 @receiver(pre_save, sender=Teacher)
 def check_subjects_limit(sender, instance, **kwargs):
