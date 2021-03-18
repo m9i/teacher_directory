@@ -92,7 +92,8 @@ class Teacher(Logged):
         if self.subjects.split(',').__len__() > 5: 
             self.validation_error = error['validation_error']
             return self.validation_error+' and now is '+str(self.subjects.split(',').__len__()) 
-
+        else:
+            return 'Valid'
 
 
 @receiver(pre_save, sender=Teacher)

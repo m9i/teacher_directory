@@ -36,7 +36,7 @@ profile image. Profile images are in the attached Zip file.
 ## Installation
 
 see the install guid on .github/workflow
-> I uploaded all the staticfiles needed for this project in the app/core/static which makes the project Javascript libs more than Python. 
+> I uploaded all the staticfiles needed for this project in the app/core/static which have made the project Javascript libs more than Python. 
 
 Install the dependencies and devDependencies and start the server.
 
