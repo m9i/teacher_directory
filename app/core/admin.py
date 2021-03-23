@@ -53,6 +53,11 @@ class TeacherBulkUploadAdmin(admin.ModelAdmin):
                 ]
     
 
+class SubjectAdmin(admin.ModelAdmin):
+    list_per_page = 15
+    search_fields = ['name',]
+    
+
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(TeacherBulkUpload, TeacherBulkUploadAdmin)
-admin.site.register(Subject)
+admin.site.register(Subject, SubjectAdmin)
