@@ -1,6 +1,6 @@
 import django_filters
 
-from core.models import Teacher
+from core.models import Subject, Teacher
 
 
 class TeacherFilter(django_filters.FilterSet):
@@ -18,3 +18,17 @@ class TeacherFilter(django_filters.FilterSet):
         super(TeacherFilter, self).__init__(*args, **kwargs)
         self.filters['last_name'].label= 'Last Name'
         self.filters['subjects__name'].label = 'Subjects Taught'
+        
+
+class SubjectFilter(django_filters.FilterSet):
+    name = django_filters.CharFilter(lookup_expr='startswith')
+    
+    class Meta:
+        model = Subject
+        fields = [
+            'name',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super(SubjectFilter, self).__init__(*args, **kwargs)
+        self.filters['name'].label= 'Name'

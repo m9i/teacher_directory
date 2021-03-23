@@ -13,7 +13,7 @@ from django.template import RequestContext
 
 
 from .models import Subject, Teacher, TeacherBulkUpload
-from .filters import TeacherFilter
+from .filters import TeacherFilter, SubjectFilter
 from .permission_handlers import user_is_verified
 from .forms import TeacherForm
 
@@ -137,10 +137,28 @@ class SubjectListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Subject
     context_object_name = 'subjects'
     template_name = 'core/subject_list.html'
+    paginate_by = 10
 
     def test_func(self):
         user = self.request.user
         return user_is_verified(user)
+    
+    def post(self, request, *args, **kwargs):
+        subject = Subject.objects.all()
+        subject_filter = SubjectFilter(request.GET, queryset=subject)
+        return render(request, 'core/subject_list.html', {'filter': subject_filter})
+
+
+    def get_queryset(self):
+        queryset = Subject.objects.all()
+        return queryset
+    
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        ctx = super().get_context_data(*args, object_list=object_list, **kwargs)
+        subjects = Subject.objects.all()
+        f = SubjectFilter(self.request.GET, queryset=subjects)
+        ctx['filter'] = f
+        return ctx
 
 subject_list = SubjectListView.as_view()
 
@@ -154,7 +172,9 @@ class CreateSubjectView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def test_func(self):
         user = self.request.user
         return user_is_verified(user)
+    
 
+    
 create_subject = CreateSubjectView.as_view()
 
 

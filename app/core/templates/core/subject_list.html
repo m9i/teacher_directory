@@ -1,20 +1,21 @@
 
 {% extends 'core/base.html' %}
 {% load i18n %}
-{% block title %}Subjects{% endblock title %}
+{% block title %}Teachers{% endblock title %}
 
 {% block breadcrumb %}
 <a class="btn btn-primary" href="{% url 'create_subject' %}"><i
-    class="fas fa-plus"></i> New subject</a>
+    class="fas fa-plus"></i> New Subject</a>
 {% endblock breadcrumb %}
 
 
 {% block content %}
   <form method="get">
   {{ filter.form.as_p}}
-
+    <ul>
+    <button class="btn btn-primary" type="submit">Search</button>
+    </ul>
   </form>
-
 <!-- Filter Results -->
 
 
@@ -25,6 +26,14 @@
           <th>Name</th>
         </tr>
       </thead>
+      <tbody>
+
+        {% for subject in filter.qs %}
+            <td>{{ subject.name}}</td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
     </table>
   </div>
 

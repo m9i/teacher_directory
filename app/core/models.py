@@ -43,9 +43,9 @@ class Logged(models.Model):
     
 
 class Subject(Logged):
-    name = models.CharField(_('Name'),max_length=255)
-    subject_code = models.UUIDField(
-        unique=True, blank=True, default=uuid.uuid4)
+    name = models.CharField(_('Name'), max_length=255, unique=True)
+    # subject_code = models.UUIDField(
+        # unique=True, blank=True, default=uuid.uuid4)
     
     def __str__(self):
         return self.name
