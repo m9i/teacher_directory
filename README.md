@@ -135,8 +135,13 @@ python3.8 manage.py runserver 127.0.0.1:8000
   
 - <img width="200" alt="teacher_seach_by_last_name" src="https://user-images.githubusercontent.com/11647170/111675656-9dac7700-8832-11eb-87a5-87dfbf0c5de6.png">
 
-
-
+<img width="200" alt="Screen Shot 1400-01-04 at 01 25 20" src="https://user-images.githubusercontent.com/11647170/112217402-3a5e8280-8c40-11eb-8420-f2b66756f28c.png">
+<img width="200" alt="Screen Shot 1400-01-04 at 01 25 05" src="https://user-images.githubusercontent.com/11647170/112217420-3f233680-8c40-11eb-9f91-f415c96d9f52.png">
+<img width="200" alt="Screen Shot 1400-01-04 at 01 24 53" src="https://user-images.githubusercontent.com/11647170/112217433-40ecfa00-8c40-11eb-87d2-016bcafc7746.png">
+<img width="200" alt="Screen Shot 1400-01-04 at 01 23 43" src="https://user-images.githubusercontent.com/11647170/112217436-43e7ea80-8c40-11eb-9597-ab9b5e3b468f.png">
+<img width="200" alt="Screen Shot 1400-01-04 at 01 21 35" src="https://user-images.githubusercontent.com/11647170/112217448-45b1ae00-8c40-11eb-83f7-a820e9a71a6f.png">
+<img width="200" alt="Screen Shot 1400-01-04 at 01 20 57" src="https://user-images.githubusercontent.com/11647170/112217456-48ac9e80-8c40-11eb-9ef7-a78c1630a324.png">
+<img width="200" alt="Screen Shot 1400-01-03 at 13 30 26" src="https://user-images.githubusercontent.com/11647170/112217470-4c402580-8c40-11eb-9fd0-5ec6e1e45683.png">
 
 
 
