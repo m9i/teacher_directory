@@ -1,5 +1,6 @@
 Django==3.1.7
 flake8==3.8.4
+six==1.15.0
 django-environ==0.4.5
 dj-static==0.0.6
 psycopg2==2.8.6
