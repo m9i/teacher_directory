@@ -1,7 +1,7 @@
 from django.contrib.admin.sites import AdminSite
 from django.test import TestCase
 from django.contrib.admin.options import ModelAdmin
-from core.models import Teacher
+from core.models import Subject, Teacher
 from core.admin import TeacherAdmin
 
 
@@ -27,8 +27,16 @@ class ModelAdminTests(TestCase):
             'email':'teach1@school.com',
             'room':'2d',
             'phone': "+971-505-555-353",
-            'subjects':'geography, Computer science, Biology, Chemistry',}  
+            }
+        sub_to_create = []
+        subjects = ['geography', 'Computer science', 'Biology, Chemistry']
         cls.teacher = Teacher.objects.create(**teacher_fields)
+        for i in  subjects:
+            if not Subject.objects.filter(name=i.capitalize()).exists():
+                subject = Subject.objects.create(name=i)
+                cls.subjects = Teacher.subjects.through.objects.get_or_create(teacher_id=cls.teacher.id, 
+                                                                              subject_id=subject.id)
+
 
     def setUp(self):
         self.site = AdminSite()
@@ -42,11 +50,11 @@ class ModelAdminTests(TestCase):
         self.assertEqual(list(ma.get_fields(request)),
                         ['date_removed', 'is_active', 'email',
                           'first_name', 'last_name', 'phone', 'room',
-                           'subjects', 'profile_pic','validation_error','is_valid'])
+                           'subjects', 'profile_pic','is_valid'])
         self.assertEqual(list(ma.get_fields(request, self.teacher)),
                         ['date_removed', 'is_active', 'email',
                           'first_name', 'last_name', 'phone', 'room',
-                           'subjects', 'profile_pic', 'validation_error','is_valid'])
+                           'subjects', 'profile_pic', 'is_valid'])
         self.assertIsNone(ma.get_exclude(request, self.teacher))
     
     

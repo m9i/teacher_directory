@@ -1,36 +1,25 @@
 from django.contrib import admin
-from django import forms
 from django.db.models import Q
 
-from .models import Teacher, TeacherBulkUpload
+from .models import Subject, Teacher, TeacherBulkUpload
+from .forms import TeacherForm
 
-# A teacher can teach no more than 5 subjects
-class TeacherAdminForm(forms.ModelForm):
-    """ 
-    A teacher can teach no more than 5 subjects
-    """
-    class Meta:
-        model = Teacher
-        exclude = [id, ]
 
-    def clean(self):
-        difference = []
-        subjects = self.cleaned_data.get('subjects')
-        if set(subjects.split(',')).__len__() > 5: 
-            raise forms.ValidationError("Can't add more than 5 subjects to a Teacher")
-        return self.cleaned_data
+class SubjectInline(admin.TabularInline):
+    model = Teacher.subjects.through
+    extra = 0
 
 class TeacherAdmin(admin.ModelAdmin):
-    form = TeacherAdminForm
+    form = TeacherForm
+    # inlines=[SubjectInline,]
     list_per_page = 15
-    readonly_fields =['get_validation_error',]
-    search_fields = ['last_name','subjects',]
+    readonly_fields =['get_subjects',]
+    search_fields = ['last_name','subjects__name',]
     list_display = ['email', 
                      'first_name',
                      'last_name',
                      'phone',
-                     'subjects',
-                     'get_validation_error',
+                     'get_subjects',
                      'is_valid',
                      ]
     fields = [( 
@@ -40,7 +29,6 @@ class TeacherAdmin(admin.ModelAdmin):
               'email',
               'subjects',
               'profile_pic',
-              'get_validation_error',
               'is_valid',
               )
                 ]
@@ -53,7 +41,7 @@ class TeacherAdmin(admin.ModelAdmin):
             search_term_as_int = int(search_term)
             queryset |= self.model.objects.filter(
                 Q(last_name__startwith=search_term_as_int)|
-                 Q(subjects__startwith=search_term_as_int))
+                 Q(subjects__name__startwith=search_term_as_int))
         except:
             pass
         return queryset, use_distinct
@@ -67,3 +55,4 @@ class TeacherBulkUploadAdmin(admin.ModelAdmin):
 
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(TeacherBulkUpload, TeacherBulkUploadAdmin)
+admin.site.register(Subject)

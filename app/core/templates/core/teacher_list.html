@@ -1,6 +1,6 @@
 
 {% extends 'core/base.html' %}
-{% load teacher_filter i18n %}
+{% load i18n %}
 {% block title %}Teachers{% endblock title %}
 
 {% block breadcrumb %}
@@ -14,8 +14,6 @@
 {% block content %}
   <form method="get">
   {{ filter.form.as_p}}
-   <!-- Last Name: {{ filter.form.last_name|first_letter_value_initial}}
-    Subjects taught: {{ filter.form.subjects|first_letter_value_initial}}-->
     <ul>
     <button class="btn btn-primary" type="submit">Search</button>
     </ul>
@@ -46,7 +44,7 @@
             <td>{{ teacher.email}}</td>
             <td>{{ teacher.phone}}</td>
             <td>{{ teacher.room}}</td>
-            <td>{{ teacher.subjects}}</td>
+            <td>{{ teacher.get_subjects}}</td>
           </tr>
         {% endfor %}
 

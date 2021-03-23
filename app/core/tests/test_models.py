@@ -1,6 +1,18 @@
 from django.test import TestCase
+from django.contrib.admin.sites import AdminSite
+from core.models import Subject, Teacher
 
-from core.models import Teacher
+class MockRequest:
+    pass
+
+
+class MockSuperUser:
+    def has_perm(self, perm, obj=None):
+        return True
+
+
+request = MockRequest()
+request.user = MockSuperUser()
 
 
 class TeacherDirectoryTests(TestCase):
@@ -10,44 +22,41 @@ class TeacherDirectoryTests(TestCase):
             'last_name':'Tomblin',
             'email':'teach1@school.com',
             'room':'2d',
-            'phone': "+971-505-555-353",
-            'subjects':'geography, Computer science, Biology, Chemistry',}  
-        Teacher.objects.create(**teacher_fields)        
+            'phone': "+971-505-555-353",}
+        sub_to_create = []
+        subjects = ['geography', 'Computer science', 'Biology, Chemistry']
+        cls.teacher = Teacher.objects.create(**teacher_fields)
+        for i in  subjects:
+            if not Subject.objects.filter(name=i.capitalize()).exists():
+                subject = Subject.objects.create(name=i)
+                cls.subjects = Teacher.subjects.through.objects.get_or_create(teacher_id=cls.teacher.id, 
+                                                                              subject_id=subject.id)       
     
-    
+    def setUp(self):
+        self.site = AdminSite()
+        
     def tearDown(self):
         super().tearDown()
      
     def test_teacher_default_photo_url(self):
-        teacher=Teacher.objects.get(id=1)
-        self.assertEqual(teacher.get_photo_url(),
+        self.assertEqual(self.teacher.get_photo_url(),
                          '/media/default-placeholder-image.png')
     
     def test_teacher_absolute_url(self):
-        teacher=Teacher.objects.get(id=1)
-        self.assertEqual(teacher.get_absolute_url(),'/core/1/')
+        self.assertEqual(self.teacher.get_absolute_url(),'/core/1/')
     
     
     def test_first_name_max_length(self):
-        teacher=Teacher.objects.get(id=1)
-        max_length = teacher._meta.get_field('first_name').max_length
+        max_length = self.teacher._meta.get_field('first_name').max_length
         self.assertEqual(max_length, 255)
 
     def test_object_name_is_first_name_last_name_tupple_room(self):
-        teacher=Teacher.objects.get(id=1)
-        expected_object_name = f'{teacher.first_name} {teacher.last_name} ({teacher.room})'
-        self.assertEqual(expected_object_name, str(teacher))
+        expected_object_name = f'{self.teacher.first_name} {self.teacher.last_name} ({self.teacher.room})'
+        self.assertEqual(expected_object_name, str(self.teacher))
     
-    def test_get_validation_error_none(self):
-        teacher=Teacher.objects.get(id=1)
-        self.assertEqual(teacher.get_validation_error(), '')
-    
-    def test_get_validation_error(self):
-        subjects='geography, Computer science, Biology, Chemistry, English, Mathematics'
-        teacher=Teacher.objects.get(id=1)
-        teacher.subjects = subjects
-        self.assertEqual(teacher.get_validation_error(),
-                          "Can't add more than 5 subjects to a Teacher and now is 6")
+
+
+
         
     
         

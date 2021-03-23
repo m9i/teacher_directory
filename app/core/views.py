@@ -12,9 +12,10 @@ from django.urls import reverse_lazy
 from django.template import RequestContext
 
 
-from .models import Teacher, TeacherBulkUpload
+from .models import Subject, Teacher, TeacherBulkUpload
 from .filters import TeacherFilter
 from .permission_handlers import user_is_verified
+from .forms import TeacherForm
 
 
 
@@ -88,6 +89,7 @@ class TeacherDetailView(LoginRequiredMixin, DetailView):
         context = super(TeacherDetailView, self).get_context_data(**kwargs)
         return context
 
+teacher_detail = TeacherDetailView.as_view()
 
 class TeacherCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Teacher
@@ -102,34 +104,70 @@ class TeacherCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         form.fields['profile_pic'].required = False
         return form
 
+teacher_create = TeacherCreateView.as_view()
 
 class TeacherUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Teacher
-    fields = ['first_name','last_name','email','phone','room','subjects','profile_pic']
+    # fields = ['first_name','last_name','email','phone','room','subjects','profile_pic']
     success_message = "Record successfully updated."
-
-    def get_form(self):
-        '''add date picker in forms'''
-        form = super(TeacherUpdateView, self).get_form()
-        form.fields['email'].widget = widgets.Textarea(attrs={'rows': 2})
-        form.fields['room'].widget = widgets.Textarea(attrs={'rows': 2})
-        form.fields['profile_pic'].required = False
-        form.fields['profile_pic'].widget = widgets.FileInput()
-        return form
-
+    form_class = TeacherForm
+    
+    def form_valid(self, form):
+        update_subjects = form.save(commit=False)
+        update_subjects.save()
+        form.save_m2m()
+        return super(TeacherUpdateView, self).form_valid(form)
+    
+    # def get_form(self):
+        # '''add date picker in forms'''
+        # form = super(TeacherUpdateView, self).get_form()
+        # form.fields['email'].widget = widgets.Textarea(attrs={'rows': 2})
+        # form.fields['room'].widget = widgets.Textarea(attrs={'rows': 2})
+        # form.fields['profile_pic'].required = False
+        # form.fields['profile_pic'].widget = widgets.FileInput()
+        # form.fields['subjects'].required = False
+        # return form
+teacher_update = TeacherUpdateView.as_view()
 
 class TeacherDeleteView(LoginRequiredMixin, DeleteView):
     model = Teacher
     success_url = reverse_lazy('teacher-list')
     
-
+teacher_delete = TeacherDeleteView.as_view()
 
 class TeacherBulkUploadView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = TeacherBulkUpload
     template_name = 'core/teacher_upload.html'
-    fields = ['csv_file']
+    fields = ['csv_file', 'image_zip_file']
     success_url = reverse_lazy('teacher-list')
     success_message = 'Successfully uploaded teachers'
+
+bulkupload_teacher = TeacherBulkUploadView.as_view()
+
+class SubjectListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Subject
+    context_object_name = 'subjects'
+    template_name = 'core/subject_list.html'
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
+subject_list = SubjectListView.as_view()
+
+
+class CreateSubjectView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Subject
+    fields = ['name',]
+    template_name = 'core/create_subject.html'
+    success_url = reverse_lazy('core:subject_list')
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
+create_subject = CreateSubjectView.as_view()
+
 
 @login_required
 def downloadcsv(request):
@@ -142,3 +180,4 @@ def downloadcsv(request):
                      'Phone Number', 'Subjects taught'])
 
     return response
+

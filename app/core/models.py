@@ -1,5 +1,5 @@
 import os
-
+import uuid
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -42,6 +42,14 @@ class Logged(models.Model):
         abstract = True
     
 
+class Subject(Logged):
+    name = models.CharField(_('Name'),max_length=255)
+    subject_code = models.UUIDField(
+        unique=True, blank=True, default=uuid.uuid4)
+    
+    def __str__(self):
+        return self.name
+
 
 class Teacher(Logged):
     # email address should be unique
@@ -62,17 +70,16 @@ class Teacher(Logged):
          max_length=255, blank=True)
     room = models.CharField(
         _('Room Number'), max_length=255, blank=True)
-    subjects = models.CharField(
-        _('Subjects taught'), max_length=500, blank=True)
+    
+    subjects = models.ManyToManyField(
+        Subject, verbose_name=_('Subjects Taught'), blank=True)
     
     profile_pic = models.ImageField(
         _('Profile picture'),
         upload_to="",
         validators=[FileExtensionValidator(allowed_extensions=['JPG','jpg','png'])],
-        default='default-placeholder-image.png' , blank=True) 
+        default='default-placeholder-image.png', null=True, blank=True) 
     # if an image is not present for the profile then you should use a default placeholder image
-    validation_error=models.CharField(
-        _('Validation Error'), max_length=255, blank=True)
     is_valid = models.BooleanField(
         _('Valid'), default=True)
     
@@ -91,34 +98,36 @@ class Teacher(Logged):
                 return self.profile_pic.url
         except FileNotFoundError:
             return f'{settings.MEDIA_ROOT}default-placeholder-image.png'      
+    
+    def get_subjects(self):
+        return ", ".join([str(sg) for sg in self.subjects.all()])
+    get_subjects.short_description = _('Subjects taught')
+    
+    def compare_two_objs(obj1, obj2, excluded_keys=None):
+        d1, d2 = obj1.__dict__, obj2
+        old, new = {}, {}
+        for k, v in d1.items():
+            if not k in excluded_keys:
+                try:
+                    if v != d2[k]:
+                        old.update({k: v})
+                        new.update({k: d2[k]})
+                except KeyError:
+                    old.update({k: v})
 
-    # A teacher can teach no more than 5 subjects
-    def get_validation_error(self):
-        """ 
-        A teacher can teach no more than 5 subjects
-        """
-        error = {'validation_error':"Can't add more than 5 subjects to a Teacher"}
-        if set(self.subjects.split(',')).__len__() > 5: 
-            self.validation_error = error['validation_error']
-            self.is_valid= False
-            return self.validation_error+' and now is '+str(self.subjects.split(',').__len__()) 
-        else:
-            unique_keys = [key.strip() for key in list(dict.fromkeys(self.subjects.split(',')))]
-            self.subjects = ', '.join([str(elem) for elem in unique_keys]) 
-            self.save()
-            return ''
+        return old, new
 
 
-@receiver(pre_save, sender=Teacher)
-def check_subjects_limit(sender, instance, **kwargs):
-    if instance.subjects.split(',').__len__() > 5: 
-         return ValidationError(
-             _("Can't add more than 5 subjects to a Teacher"))
-     
-@receiver(pre_save, sender=Teacher)
-def check_has_email(sender, instance, **kwargs):
-    if not instance.email:
-        return ValidationError(_('The given email must be set'))
+# @receiver(pre_save, sender=Teacher)
+# def check_subjects_limit(sender, instance, **kwargs):
+    # if instance.subjects.all().__len__() > 5: 
+        #  return ValidationError(
+            #  _("Can't add more than 5 subjects to a Teacher"))
+    #  
+# @receiver(pre_save, sender=Teacher)
+# def check_has_email(sender, instance, **kwargs):
+    # if not instance.email:
+        # return ValidationError(_('The given email must be set'))
 
 
 class TeacherBulkUpload(models.Model):
@@ -127,7 +136,7 @@ class TeacherBulkUpload(models.Model):
     csv_file = models.FileField(
         _('File Upload'),
         validators=[FileExtensionValidator(allowed_extensions=['csv'])],
-        upload_to='teachers/bulkupload')
+        upload_to='teachers/bulkupload', blank=True)
     image_zip_file = models.FileField(
         _('zip File Image Upload'),
         validators=[FileExtensionValidator(allowed_extensions=['zip'])],

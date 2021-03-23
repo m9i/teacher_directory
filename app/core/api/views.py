@@ -9,11 +9,11 @@ from core.models import *
 class TeacherAPIView(generics.ListAPIView):
     search_fields = [
                     'last_name',
-                    'subjects',
+                    'subjects__name',
                      ]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = {'last_name': [ 'startswith',],
-                         'subjects': [ 'startswith',],
+                         'subjects__name': [ 'startswith',],
                          }
     queryset = Teacher.objects.all().order_by('-id')
     serializer_class = TeacherSerializer

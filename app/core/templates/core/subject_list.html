@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+{% load static %} 
+
+{% block dashboard-body %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+    <li class="breadcrumb-item">
+      <a href="{% url 'core:subject_list' %}">Subjects</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">All Subjects</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-12 mb-2">
+    <h4 class="ml-0">All Subjects</h4>
+  </div>
+  <div class="col-12">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">SYL</th>
+          <th scope="col">Name</th>
+          <th scope="col">Subject Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for subject in subjects %}
+        <tr>
+          <th scope="row">
+            <a href="#"> {{ forloop.counter }} </a>
+          </th>
+          <td>
+            <a href="#"> {{ subject.name }} </a>
+          </td>
+          <td>
+            <a href="#"> {{ subject.subject_code }} </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
