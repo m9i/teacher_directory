@@ -134,4 +134,4 @@ dmypy.json
 **/app/static/
 **/media/**
 **/.DS_Store
-~/app/core/static/dist
+# ~/app/core/static/dist
