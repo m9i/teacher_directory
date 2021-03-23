@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('', include(router.urls)),
     path('teacher-list/', TeacherAPIView.as_view()),
+    path('subject-list/', SubjectAPIView.as_view()),
 ]

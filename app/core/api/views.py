@@ -17,3 +17,13 @@ class TeacherAPIView(generics.ListAPIView):
                          }
     queryset = Teacher.objects.all().order_by('-id')
     serializer_class = TeacherSerializer
+    
+class SubjectAPIView(generics.ListAPIView):
+    search_fields = [
+                    'name',
+                     ]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = {'name': [ 'startswith',],
+                         }
+    queryset = Subject.objects.all().order_by('-id')
+    serializer_class = SubjectSerializer

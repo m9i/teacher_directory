@@ -18,3 +18,10 @@ class TeacherBulkUploadSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeacherBulkUpload
         fields = '__all__'
+        
+class SubjectSerializer(serializers.ModelSerializer):
+    teachers = TeacherSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Subject
+        fields = '__all__'
