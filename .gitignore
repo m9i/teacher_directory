@@ -10,7 +10,7 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
+# dist/
 downloads/
 eggs/
 .eggs/
@@ -130,7 +130,8 @@ dmypy.json
 .venv
 # **/migrations/**
 .vscode/**
-.env
-**/app/static/**
+# .env
+**/app/static/
 **/media/**
 **/.DS_Store
+~/app/core/static/dist
