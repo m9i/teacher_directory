@@ -59,6 +59,8 @@ Install the dependencies and devDependencies and start the server.
       run: |
         > python -m pip install --upgrade pip
         > pip install -r requirements.txt
+        > if you have error on psycopg2 on mac: >> export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/opt/openssl/lib/
+        > if you have error on psycopg2 on ubuntu: >> pip install psycopg2-binary 
     # Make needed migrations
       > python app/manage.py makemigrations
     # Wait for db
@@ -107,6 +109,7 @@ This Project is developed with all desired features in both B2B and B2C side. (A
 ```sh
 python3.8 manage.py runserver 127.0.0.1:8000
 ```
+
 
 > ## License
 
