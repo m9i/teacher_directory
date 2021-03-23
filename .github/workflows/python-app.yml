@@ -35,7 +35,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Make needed migrations
-      run: python app/manage.py makemigtaions
+      run: python app/manage.py makemigrations
     - name: Wait for db
       run: python app/manage.py wait_for_db
     - name: Run migrations

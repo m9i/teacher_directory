@@ -60,7 +60,7 @@ Install the dependencies and devDependencies and start the server.
         > python -m pip install --upgrade pip
         > pip install -r requirements.txt
     # Make needed migrations
-      > python app/manage.py makemigtaions
+      > python app/manage.py makemigrations
     # Wait for db
       > python app/manage.py wait_for_db
     # Run migrations
