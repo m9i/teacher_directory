@@ -130,7 +130,7 @@ dmypy.json
 .venv
 # **/migrations/**
 .vscode/**
-# .env
-# **/staticfiles/**
+.env
+**/static/**
 **/media/**
 **/.DS_Store
