@@ -4,8 +4,8 @@
 {% block extra_header %}
 {% endblock %}
 
-{% block dashboard-body %}
-<form action="{% url 'core:create-subject' %}" method="POST" class="d-block">
+{% block content %}
+<form action="{% url 'create_subject' %}" method="POST" class="d-block">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Create Subject" class="btn btn-dark">

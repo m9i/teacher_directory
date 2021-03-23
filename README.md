@@ -47,6 +47,10 @@ Install the dependencies and devDependencies and start the server.
 
 ```sh
     - runs on ubuntu or mac os
+   steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
       with:
         python-version: 3.8
     - name: psycopg2 prerequisites
@@ -55,6 +59,8 @@ Install the dependencies and devDependencies and start the server.
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Make needed migrations
+      run: python app/manage.py makemigtaions
     - name: Wait for db
       run: python app/manage.py wait_for_db
     - name: Run migrations
@@ -63,8 +69,11 @@ Install the dependencies and devDependencies and start the server.
       run: python app/manage.py collectstatic
     - name: create superuser
       run: python app/manage.py createsuperuser
+    - name: clean up unused media fiels 
+      run: python app/manage.py cleanup_unused_meida  -e *.gitignore -e *.png
     - name: Run tests
-      run: python app/manage.py test  
+      run: python app/manage.py test
+ 
 ```
 
 If Docker installed:

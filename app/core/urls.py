@@ -24,7 +24,7 @@ urlpatterns = [
   path('downloadcsv/', downloadcsv,
         name='download-csv'),
   
-  path('create_subject',
+  path('create-subject',
         create_subject,
         name='create_subject'
     ),

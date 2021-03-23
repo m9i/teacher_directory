@@ -59,8 +59,10 @@ INSTALLED_APPS = [
     'drf_yasg',
     'widget_tweaks',
     'core',
+    'clean_media',
     'django_filters',
     'rest_framework',
+    
 ]
 
 MIDDLEWARE = [

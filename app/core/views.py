@@ -19,8 +19,6 @@ from .forms import TeacherForm
 
 
 
-
-
 def handler404(request, *args, **argv):
     error = 'Request Not Found, back to previous page!'
     response = render(request, 'core/error_page.html', {})
@@ -118,15 +116,6 @@ class TeacherUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         form.save_m2m()
         return super(TeacherUpdateView, self).form_valid(form)
     
-    # def get_form(self):
-        # '''add date picker in forms'''
-        # form = super(TeacherUpdateView, self).get_form()
-        # form.fields['email'].widget = widgets.Textarea(attrs={'rows': 2})
-        # form.fields['room'].widget = widgets.Textarea(attrs={'rows': 2})
-        # form.fields['profile_pic'].required = False
-        # form.fields['profile_pic'].widget = widgets.FileInput()
-        # form.fields['subjects'].required = False
-        # return form
 teacher_update = TeacherUpdateView.as_view()
 
 class TeacherDeleteView(LoginRequiredMixin, DeleteView):
@@ -159,8 +148,8 @@ subject_list = SubjectListView.as_view()
 class CreateSubjectView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Subject
     fields = ['name',]
-    template_name = 'core/create_subject.html'
-    success_url = reverse_lazy('core:subject_list')
+    template_name = 'core/subject_create.html'
+    success_url = reverse_lazy('subject_list')
 
     def test_func(self):
         user = self.request.user
