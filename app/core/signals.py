@@ -86,7 +86,10 @@ def create_bulk_teacher(sender, created, instance, *args, **kwargs):
               for i in subjects_list:
                 subject = Subject.objects.get_or_create(name=i.capitalize())[0]
                 t.subjects.add(subject.id)
-                save_other_factors('Teacher', new_obj, t)
+                excluded_keys = ['id','date_created','date_removed','is_active','date_modified','_state',]
+                if Teacher.compare_two_objs(t,new_obj, excluded_keys=excluded_keys)[1].__len__() > 0:
+                  save_other_factors('Teacher', new_obj, t)
+                  
     instance.csv_file.close()
     instance.delete()
 
