@@ -72,7 +72,9 @@ class Teacher(Logged):
         _('Room Number'), max_length=255, blank=True)
     
     subjects = models.ManyToManyField(
-        Subject, verbose_name=_('Subjects Taught'), blank=True)
+        Subject, verbose_name=_('Subjects Taught'),
+        related_name='teachers', 
+        blank=True)
     
     profile_pic = models.ImageField(
         _('Profile picture'),
