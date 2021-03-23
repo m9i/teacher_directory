@@ -131,6 +131,6 @@ dmypy.json
 # **/migrations/**
 .vscode/**
 .env
-**/static/**
+**/app/static/**
 **/media/**
 **/.DS_Store
