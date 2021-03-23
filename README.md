@@ -46,33 +46,33 @@ see the install guid on .github/workflow
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-    - runs on ubuntu or mac os
+    >> runs on ubuntu or mac os
    steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 3.8
+    # Set up Python 3.8
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
-    - name: psycopg2 prerequisites
-      run: sudo apt-get install python3-dev libpq-dev
-    - name: Install dependencies
+    # psycopg2 prerequisites
+      > sudo apt-get install python3-dev libpq-dev
+    # Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Make needed migrations
-      run: python app/manage.py makemigtaions
-    - name: Wait for db
-      run: python app/manage.py wait_for_db
-    - name: Run migrations
-      run: python app/manage.py migrate
-    - name: collect staticfiles
-      run: python app/manage.py collectstatic
-    - name: create superuser
-      run: python app/manage.py createsuperuser
-    - name: clean up unused media fiels 
-      run: python app/manage.py cleanup_unused_meida  -e *.gitignore -e *.png
-    - name: Run tests
-      run: python app/manage.py test
+        > python -m pip install --upgrade pip
+        > pip install -r requirements.txt
+    # Make needed migrations
+      > python app/manage.py makemigtaions
+    # Wait for db
+      > python app/manage.py wait_for_db
+    # Run migrations
+      > python app/manage.py migrate
+    # collect staticfiles
+      > python app/manage.py collectstatic
+    # create superuser
+      > python app/manage.py createsuperuser
+    # clean up unused media fiels 
+      > python app/manage.py cleanup_unused_meida  -e *.gitignore -e *.png
+    # Run tests 
+      > python app/manage.py test
  
 ```
 
