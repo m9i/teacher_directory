@@ -2,16 +2,17 @@ from django.contrib import admin
 from django.db.models import Q
 
 from .models import Subject, Teacher, TeacherBulkUpload
-from .forms import TeacherForm
+from .forms import TeacherForm, SubjectInlineForm
 
 
 class SubjectInline(admin.TabularInline):
+    form = SubjectInlineForm
     model = Teacher.subjects.through
     extra = 0
 
 class TeacherAdmin(admin.ModelAdmin):
     form = TeacherForm
-    # inlines=[SubjectInline,]
+    inlines=[SubjectInline,]
     list_per_page = 15
     readonly_fields =['get_subjects',]
     search_fields = ['last_name','subjects__name',]

@@ -18,12 +18,12 @@ class SubjectInlineForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SubjectInlineForm, self).__init__(*args, **kwargs)
         if kwargs.get('instance'):
-            teacher = Teacher.objects.get(id=self.instance.id)
-            self.fields['subjects'].initial = teacher.subjects
+            teacher = Teacher.objects.get(id=self.instance.teacher_id)
+            self.fields['subjects'].initial = teacher.get_subjects
             
     def save(self, commit=True):
         instance = super(SubjectInlineForm, self).save(commit=False)
-        teacher = Teacher.objects.get(id=instance.id)
+        teacher = Teacher.objects.get(id=instance.teacher_id)
         teacher.subjects = self.cleaned_data['subjects']
         teacher.save()
 
